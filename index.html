@@ -72,6 +72,27 @@
     .stat-v { font-size: 1.9rem; font-weight: 800; color: white; display: block; }
     .stat-l { font-size: .7rem; color: #6a7590; margin-top: .3rem; letter-spacing: .04em; }
 
+    /* ── Avatar astronaute (transmissions) ──────────── */
+    .tx-avatar {
+      width: 160px; height: 160px; object-fit: contain;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 0 18px rgba(100,200,255,.4));
+      animation: avatarFloat 3.2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes avatarFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+    .tx-speaker {
+      display: flex; flex-direction: column; align-items: center; gap: .35rem;
+    }
+    .tx-speaker-name {
+      font-family: 'Consolas','Courier New',monospace;
+      font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(100,200,255,.4);
+    }
+
     /* ── Transmission overlay (Contact) ──────────────── */
     #transmission {
       position: fixed; inset: 0; z-index: 200;
@@ -116,7 +137,8 @@
 
     /* ── Transmission About section ─────────────────── */
     #tx-about {
-      position: absolute; inset: 0; overflow-y: auto;
+      position: absolute; inset: 0; overflow-y: auto; z-index: 2;
+      background: rgba(2,2,14,.98);
       display: none; opacity: 0; transition: opacity .5s ease;
     }
     #tx-about.visible { opacity: 1; }
@@ -171,6 +193,16 @@
       opacity: 0; pointer-events: none; transition: opacity .32s ease;
     }
     #skill-panel.visible { opacity: 1; pointer-events: all; }
+    #skill-panel-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+    }
+    #sk-drapeau {
+      width: 100px; object-fit: contain; image-rendering: pixelated;
+      filter: drop-shadow(0 0 14px rgba(100,200,255,.3));
+      animation: avatarFloat 3.2s ease-in-out infinite;
+      transform-origin: bottom center;
+      margin-bottom: -8px;
+    }
     .sk-card {
       width: min(520px, calc(100vw - 3rem));
       background: rgba(8,6,32,.92);
@@ -284,6 +316,10 @@
 <!-- Transmission overlay (Contact + About) -->
 <div id="transmission">
   <div id="tx-status">Signal reçu — Décodage en cours</div>
+  <div class="tx-speaker">
+    <img class="tx-avatar" src="assets/img/lucas-bras-ecartes.png" alt="Lucas Fouquet"/>
+    <span class="tx-speaker-name" data-fr="Lucas Fouquet — En direct" data-en="Lucas Fouquet — Live">Lucas Fouquet — En direct</span>
+  </div>
   <div id="tx-content"></div>
   <div id="tx-close" onclick="closeTransmission()"
        data-fr="[ FERMER LA TRANSMISSION ]" data-en="[ CLOSE TRANSMISSION ]">[ FERMER LA TRANSMISSION ]</div>
@@ -366,6 +402,10 @@
   <div id="intro-status"
        data-fr="MISSION BRIEFING — TRANSMISSION SÉCURISÉE"
        data-en="MISSION BRIEFING — SECURE TRANSMISSION">MISSION BRIEFING — TRANSMISSION SÉCURISÉE</div>
+  <div class="tx-speaker">
+    <img class="tx-avatar" src="assets/img/lucas-salut.png" alt="Lucas Fouquet"/>
+    <span class="tx-speaker-name" data-fr="Lucas Fouquet — Commandant" data-en="Lucas Fouquet — Commander">Lucas Fouquet — Commandant</span>
+  </div>
   <div id="intro-content"></div>
   <div id="intro-close" style="opacity:0" onclick="dismissIntro()"
        data-fr="[ COMMENCER LA MISSION ]" data-en="[ BEGIN MISSION ]">[ COMMENCER LA MISSION ]</div>
@@ -443,6 +483,8 @@
 
 <!-- Skill detail panel -->
 <div id="skill-panel" onclick="if(event.target===this)closeSkillPanel()">
+  <div id="skill-panel-wrap">
+  <img id="sk-drapeau" src="assets/img/lucas-drapeau.png" alt="Lucas"/>
   <div class="sk-card" id="skill-card">
     <button class="sk-close-btn" onclick="closeSkillPanel()"
             data-fr="[ FERMER ]" data-en="[ CLOSE ]">[ FERMER ]</button>
@@ -452,6 +494,7 @@
     <div class="sk-desc" id="sk-desc"></div>
     <div class="sk-projects-title" id="sk-proj-title"></div>
     <div class="sk-project-list" id="sk-proj-list"></div>
+  </div>
   </div>
 </div>
 
@@ -491,6 +534,9 @@ let lastFrameT = 0;
 let view    = 'home';   // 'home' | 'projects' | 'skills'
 let lang    = 'fr';
 let hovered = null;     // id of hovered body in home view
+
+// ── Lucas astronaute — sprites préchargés ───────────────────────────────────
+const IMG_DRAPEAU  = new Image(); IMG_DRAPEAU.src  = 'assets/img/lucas-drapeau.png';
 
 // ── World positions ─────────────────────────────────────────────────────────
 const POS = {
@@ -652,8 +698,8 @@ const PLANETS = [
     },
   },
   {
-    id: 'accidents', fr: 'Accidents Route', en: 'Road Accidents',
-    subfr: 'Python · Plotly', suben: 'Python · Plotly',
+    id: 'accidents', fr: 'Accidents de la route en France', en: 'Road Accidents France',
+    subfr: 'SQL · Data Analysis', suben: 'SQL · Data Analysis',
     href: 'projects/accidents.html',
     oR: 128, sp: .000085, ph: 3.7, rad: 10, atmo: 'rgba(195,72,32,.16)',
     draw(x, y, r) {
@@ -728,7 +774,7 @@ const SKILLS = [
       { name: 'Discogs Scraper', href: 'projects/discogs.html',
         fr: 'Extraction de milliers de vinyles via requests + BeautifulSoup, nettoyage et structuration des données avec pandas.',
         en: 'Scraped thousands of vinyl records using requests + BeautifulSoup, cleaned and structured data with pandas.' },
-      { name: 'Accidents Route', href: 'projects/accidents.html',
+      { name: 'Accidents de la route en France', href: 'projects/accidents.html',
         fr: 'Analyse exploratoire complète d\'un dataset national, détection de patterns et visualisations dynamiques avec Plotly.',
         en: 'Full exploratory analysis of a national dataset, pattern detection and dynamic visualisations with Plotly.' },
       { name: 'Synapse', href: 'projects/synapse.html',
@@ -770,7 +816,7 @@ const SKILLS = [
       { name: 'Discogs Scraper', href: 'projects/discogs.html',
         fr: 'Dédoublonnage, normalisation des formats (prix, dates, labels) et export CSV propre depuis les données brutes scrapées.',
         en: 'Deduplication, format normalisation (prices, dates, labels) and clean CSV export from raw scraped data.' },
-      { name: 'Accidents Route', href: 'projects/accidents.html',
+      { name: 'Accidents de la route en France', href: 'projects/accidents.html',
         fr: 'Fusion de plusieurs fichiers CSV annuels, recodage des variables catégorielles et création de features pour l\'analyse.',
         en: 'Merging multiple annual CSV files, recoding categorical variables and creating features for analysis.' },
       { name: 'Analyse Olist', href: 'projects/olist.html',
@@ -2097,7 +2143,7 @@ function showIntro() {
   const lines = lang === 'fr' ? [
     { t: '— BIENVENUE ASTRONAUTE —', col: 'rgba(100,200,255,.52)' },
     { t: '', col: '' },
-    { t: 'Votre mission : explorer la galaxie Lucas FOUQUET.', col: 'rgba(100,200,255,.9)' },
+    { t: 'Votre mission : explorer ce portfolio interactif.', col: 'rgba(100,200,255,.9)' },
     { t: 'Elle regorge de planètes et nébuleuses', col: 'rgba(100,200,255,.75)' },
     { t: 'qui méritent toute votre attention.', col: 'rgba(100,200,255,.75)' },
     { t: '', col: '' },
@@ -2107,7 +2153,7 @@ function showIntro() {
   ] : [
     { t: '— WELCOME ASTRONAUT —', col: 'rgba(100,200,255,.52)' },
     { t: '', col: '' },
-    { t: 'Your mission: explore the Lucas FOUQUET galaxy.', col: 'rgba(100,200,255,.9)' },
+    { t: 'Your mission: explore this interactive portfolio.', col: 'rgba(100,200,255,.9)' },
     { t: 'It is filled with planets and nebulae', col: 'rgba(100,200,255,.75)' },
     { t: 'that deserve your full attention.', col: 'rgba(100,200,255,.75)' },
     { t: '', col: '' },
