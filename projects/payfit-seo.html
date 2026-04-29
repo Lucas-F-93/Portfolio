@@ -144,6 +144,16 @@
     <span class="tag">RH · Paie · SIRH</span>
   </div>
 
+  <!-- Contexte -->
+  <div class="section">
+    <div class="section-eyebrow">Contexte</div>
+    <div class="section-title">Objectif du projet</div>
+    <p class="section-text">Dans le cadre d'une mission SEO pour Payfit — plateforme SaaS RH et paie — l'enjeu était d'identifier automatiquement les mots-clés émergeants dans l'actualité RH française et dans les contenus publiés par les concurrents directs.</p>
+    <p class="section-text">Plutôt qu'une veille manuelle chronophage, j'ai conçu un système entièrement automatisé : les scénarios Make collectent l'actualité via Google News RSS, GPT-4o-mini extrait la sémantique, les agents Dust analysent et priorisent, et Google Sheets centralise les outputs pour l'équipe SEO.</p>
+  </div>
+
+  <hr class="divider"/>
+
   <!-- Architecture Dust -->
   <div class="section">
     <div class="section-eyebrow">Architecture</div>
@@ -195,6 +205,17 @@
             <div class="source-item"><div class="source-dot sd-news"></div>Google News · gestion ressources humaines entreprise</div>
             <div class="source-item"><div class="source-dot sd-news"></div>Google News · SIRH logiciel RH entreprise France</div>
           </div>
+
+          <div style="margin-top:.9rem">
+            <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:.55rem">Onglet « Requêtes » — Google Sheet Mots-clés Actualités</div>
+            <div style="border:1px solid rgba(255,255,255,.07);border-radius:.45rem;overflow:hidden;background:#0d0c1a;cursor:zoom-in" onclick="openLightbox('../assets/img/Requêtes.png')">
+              <img src="../assets/img/Requêtes.png" alt="Onglet Requêtes — Mots-clés Actualités" style="display:block;width:100%;height:auto">
+            </div>
+            <div style="font-size:.62rem;color:rgba(255,255,255,.2);padding:.35rem .5rem;display:flex;align-items:center;gap:.35rem">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              Cliquer pour agrandir · Liste des 10 sources + requêtes Google News utilisées en entrée du Scénario 1
+            </div>
+          </div>
         </div>
 
         <div style="margin-bottom:1.4rem">
@@ -233,6 +254,18 @@
         <p class="sc-desc">
           Parcourt la liste des <strong>100 mots-clés</strong> générée par le Scénario 1, recherche les <strong>10 derniers articles Google News</strong> pour chacun, et enregistre dans le Google Sheet les URLs et les mots-clés extraits par IA de chaque titre.
         </p>
+
+        <div style="margin-bottom:1.4rem">
+          <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:.55rem">Onglet « Mots clés Actualité » — Google Sheet Mots-clés Actualités</div>
+          <div style="border:1px solid rgba(255,255,255,.07);border-radius:.45rem;overflow:hidden;background:#0d0c1a;cursor:zoom-in" onclick="openLightbox('../assets/img/Mots clés Actualité.png')">
+            <img src="../assets/img/Mots clés Actualité.png" alt="Onglet Mots clés Actualité" style="display:block;width:100%;height:auto">
+          </div>
+          <div style="font-size:.62rem;color:rgba(255,255,255,.2);padding:.35rem .5rem;display:flex;align-items:center;gap:.35rem">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Cliquer pour agrandir · 100 mots-clés générés par run + 10 URLs + mots-clés extraits par article
+          </div>
+        </div>
+
         <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:.7rem">Modules</div>
         <div class="modules-list">
           <div class="mod"><div class="mod-num mn-sheets">1</div><div class="mod-text"><div class="mod-name">Google Sheets — Get Range Values</div><div class="mod-desc">Lit la liste des mots-clés dans l'onglet "Mots clés Actualité" et les envoie un par un au module suivant.</div></div></div>
@@ -265,16 +298,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <hr class="divider"/>
-
-  <!-- Contexte -->
-  <div class="section">
-    <div class="section-eyebrow">Contexte</div>
-    <div class="section-title">Objectif du projet</div>
-    <p class="section-text">Dans le cadre d'une mission SEO pour Payfit — plateforme SaaS RH et paie — l'enjeu était d'identifier automatiquement les mots-clés émergeants dans l'actualité RH française et dans les contenus publiés par les concurrents directs.</p>
-    <p class="section-text">Plutôt qu'une veille manuelle chronophage, j'ai conçu un système entièrement automatisé : les scénarios Make collectent l'actualité via Google News RSS, GPT-4o-mini extrait la sémantique, les agents Dust analysent et priorisent, et Google Sheets centralise les outputs pour l'équipe SEO.</p>
   </div>
 
   <hr class="divider"/>
